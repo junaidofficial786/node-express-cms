@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+const {
+    index,
+    articlesByCategories,
+    singleArticle,
+    search,
+    author,
+    addComment
+} = require('../controllers/siteController');
+
 router.get('/', index);
 router.get('/category/:name', articlesByCategories);
 router.get('/single/:id', singleArticle);
