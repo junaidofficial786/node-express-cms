@@ -18,7 +18,7 @@ app.set('layout', 'layout');
 app.set('view engine', 'ejs');
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -27,10 +27,15 @@ mongoose.connect(process.env.MONGO_URI, {
     console.error('MongoDB connection error:', err);
 });
 
+//routes
+app.use('/', require('./routes/frontend'));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.use('/admin', (req, res, next) => {
+    res.locals.layout = 'admin/layout';
+    next();
 });
+
+app.use('/admin', require('./routes/admin'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

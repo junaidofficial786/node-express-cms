@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
     index,
-    articlesByCategories,
+    articleByCategory,
     singleArticle,
     search,
     author,
@@ -11,7 +11,7 @@ const {
 } = require('../controllers/siteController');
 
 router.get('/', index);
-router.get('/category/:name', articlesByCategories);
+router.get('/category/:name', articleByCategory);
 router.get('/single/:id', singleArticle);
 router.get('/search', search);
 router.get('/author/:name', author);
