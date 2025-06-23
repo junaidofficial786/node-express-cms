@@ -5,21 +5,27 @@ const loginPage = async (req, res) => {
         layout: false
     })
 }
-const adminLogin = async (req, res) => {}
-const logout = async (req, res) => {}
+const adminLogin = async (req, res) => { }
+const logout = async (req, res) => { }
 
 const allUsers = async (req, res) => {
-    res.render('admin/users')
+    const users = await userModel.find()
+    res.render('admin/users', {
+        users: users
+    })
 }
 const addUserPage = async (req, res) => {
     res.render('admin/users/create')
 }
-const addUser = async (req, res) => {}
+const addUser = async (req, res) => {
+    await userModel.create(req.body)
+    res.redirect('/admin/users')
+}
 const updateUserPage = async (req, res) => {
     res.render('admin/users/update')
 }
-const updateUser = async (req, res) => {}
-const deleteUser = async (req, res) => {}
+const updateUser = async (req, res) => { }
+const deleteUser = async (req, res) => { }
 
 const dashboard = async (req, res) => {
     res.render('admin/dashboard')

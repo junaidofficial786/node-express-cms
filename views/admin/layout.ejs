@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/font-awesome.css">
     <!-- Custom stlylesheet -->
     <link rel="stylesheet" href="/css/style.css">
+    <%- typeof tabulatorCSS == 'undefined' ? '' : tabulatorCSS %>
 </head>
 
 <body>
@@ -70,17 +71,18 @@
     <!-- /Menu Bar -->
 
     <%- body %>
-    <!-- Footer -->
-    <div id="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <span>© Copyright 2025 News | Powered by <a href="https://my-portfolio-silk-eight-89.vercel.app/">Junaid Hassan</a></span>
+        <!-- Footer -->
+        <div id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span>© Copyright 2025 News | Powered by <a
+                                href="https://my-portfolio-silk-eight-89.vercel.app/">Junaid Hassan</a></span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- /Footer -->
+        <!-- /Footer -->
 </body>
 
 </html>
