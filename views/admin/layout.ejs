@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/font-awesome.css">
     <!-- Custom stlylesheet -->
     <link rel="stylesheet" href="/css/style.css">
-    <%- typeof tabulatorCSS == 'undefined' ? '' : tabulatorCSS %>
+    <%- typeof tabulatorCSS=='undefined' ? '' : tabulatorCSS %>
 </head>
 
 <body>
@@ -30,7 +30,7 @@
                 <!-- /LOGO -->
                 <!-- LOG-Out -->
                 <div class="col-md-2">
-                    <a href="logout.html" class="admin-logout">
+                    <a href="/admin/logout" class="admin-logout">
                         <i class="fa fa-sign-out"></i> logout
                     </a>
                 </div>
@@ -52,17 +52,19 @@
                             <a href="/admin/article">Article</a>
                         </li>
                         <li>
-                            <a href="/admin/category">Category</a>
-                        </li>
-                        <li>
-                            <a href="/admin/users">Users</a>
-                        </li>
-                        <li>
                             <a href="/admin/comments">Comments</a>
                         </li>
-                        <li>
-                            <a href="/admin/settings">Settings</a>
-                        </li>
+                        <% if (role==='admin' ) { %>
+                            <li>
+                                <a href="/admin/category">Category</a>
+                            </li>
+                            <li>
+                                <a href="/admin/users">Users</a>
+                            </li>
+                            <li>
+                                <a href="/admin/settings">Settings</a>
+                            </li>
+                        <% } %>
                     </ul>
                 </div>
             </div>
