@@ -32,7 +32,7 @@ router.get('/add-category', authenticated, isAdmin, categoryController.addCatego
 router.post('/add-category', authenticated, isAdmin, categoryController.addCategory);
 router.get('/update-category/:id', authenticated, isAdmin, categoryController.updateCategoryPage);
 router.post('/update-category/:id', authenticated, isAdmin, categoryController.updateCategory);
-router.post('/delete-category/:id', authenticated, isAdmin, categoryController.deleteCategory);
+router.delete('/delete-category/:id', authenticated, isAdmin, categoryController.deleteCategory);
 
 //article CRUD Routes
 router.get('/article', authenticated, articleController.allArticles);
