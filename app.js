@@ -2,12 +2,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
-const flash = require('connect-flash');
 const express = require('express');
 const app = express();
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
-
 
 // Middleware
 app.use(express.json());

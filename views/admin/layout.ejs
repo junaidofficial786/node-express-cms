@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="/css/font-awesome.css">
     <!-- Custom stlylesheet -->
     <link rel="stylesheet" href="/css/style.css">
+
     <%- typeof tabulatorCSS=='undefined' ? '' : tabulatorCSS %>
+        <%- typeof summernoteCSS=='undefined' ? '' : summernoteCSS %>
 </head>
 
 <body>
@@ -25,7 +27,7 @@
             <div class="row">
                 <!-- LOGO -->
                 <div class="col-md-2 me-auto">
-                    <a href="/admin/dashboard"><img class="logo" src="/images/news.jpg" alt="Logo"></a>
+                    <a href="dashboard.html"><img class="logo" src="/images/news.jpg" alt="Logo"></a>
                 </div>
                 <!-- /LOGO -->
                 <!-- LOG-Out -->
@@ -51,20 +53,22 @@
                         <li>
                             <a href="/admin/article">Article</a>
                         </li>
-                        <li>
-                            <a href="/admin/comments">Comments</a>
-                        </li>
-                        <% if (role==='admin' ) { %>
+                        <% if(role==='admin' ) { %>
                             <li>
                                 <a href="/admin/category">Category</a>
                             </li>
                             <li>
                                 <a href="/admin/users">Users</a>
                             </li>
-                            <li>
-                                <a href="/admin/settings">Settings</a>
-                            </li>
-                        <% } %>
+                            <% } %>
+                                <li>
+                                    <a href="/admin/comments">Comments</a>
+                                </li>
+                                <% if(role==='admin' ) { %>
+                                    <li>
+                                        <a href="/admin/settings">Settings</a>
+                                    </li>
+                                    <% } %>
                     </ul>
                 </div>
             </div>
@@ -78,13 +82,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <span>© Copyright 2025 News | Powered by <a
-                                href="https://my-portfolio-silk-eight-89.vercel.app/">Junaid Hassan</a></span>
+                        <span>© Copyright 2025 News | Powered by <a href="http://yahubaba.com/">Yahu Baba</a></span>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /Footer -->
+        <%- typeof tabulatorJS=='undefined' ? '' : tabulatorJS %>
 </body>
 
 </html>

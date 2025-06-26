@@ -1,19 +1,18 @@
 const jwt = require('jsonwebtoken');
 
-const authenticated = async (req, res, next) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.redirect('/admin'); // Redirect to login if no token is found
-    }
-
+const isLoggedIn = async (req, res, next) => {
     try {
-        const tokenData = jwt.verify(token, process.env.JWT_SECRET);
-        req.role = tokenData.role; // Store user role in request object
-        req.fullname = tokenData.fullname; // Store username in request object
-        next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-        return res.status(401).json({ message: 'Invalid token' });
-    }
-}
+        const token = req.cookies.token;
+        if (!token) return res.redirect('/admin/');
 
-module.exports = authenticated;
+        const tokenData = jwt.verify(token, process.env.JWT_SECRET);
+        req.id = tokenData.id;
+        req.role = tokenData.role;
+        req.fullname = tokenData.fullname;
+        next();
+    } catch (error) {
+        res.status(401).send('Unauthorized: Invalid token');
+    }
+};
+
+module.exports = isLoggedIn
