@@ -19,7 +19,7 @@ router.get('/logout', authenticated, userController.logout);
 
 router.get('/dashboard', authenticated, userController.dashboard);
 router.get('/settings', authenticated, isAdmin, userController.settings);
-router.post('/save-settings', authenticated, isAdmin, upload.single('website_logo') , userController.saveSettings);
+router.post('/save-settings', authenticated, isAdmin, upload.single('website_logo'), userController.saveSettings);
 
 //User CRUD Routes
 router.get('/users', authenticated, isAdmin, userController.allUser);
@@ -48,5 +48,36 @@ router.delete('/delete-article/:id', authenticated, articleController.deleteArti
 //comment Routes
 router.get('/comments', authenticated, commentController.allComments);
 
+// 404 Middleware
+router.use(authenticated, (req, res, next) => {
+    res.status(404).render('admin/404', {
+        message: 'Page not found',
+        role: req.role
+    })
+});
+
+// 500 Error Handler
+router.use(authenticated, (err, req, res, next) => {
+    console.error(err.stack);
+    const status = err.status || 500;
+    let view;
+    switch (status) {
+        case 401:
+            view = 'admin/401';
+            break;
+        case 404:
+            view = 'admin/404';
+            break;
+        case 500:
+            view = 'admin/500';
+            break;
+        default:
+            view = 'admin/500';
+    }
+    res.status(status).render(view, {
+        message: err.message || 'Something went wrong',
+        role: req.role
+    })
+});
 
 module.exports = router;

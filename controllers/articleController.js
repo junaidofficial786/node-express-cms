@@ -3,6 +3,7 @@ const newsModel = require('../models/News');
 const userModel = require('../models/User');
 const fs = require('fs')
 const path = require('path')
+const createError = require('../utils/error-message');
 
 const allArticle = async (req, res) => {
     try {
@@ -46,42 +47,43 @@ const addArticle = async (req, res) => {
     }
 }
 
-const updateArticlePage = async (req, res) => {
+const updateArticlePage = async (req, res, next) => {
     const id = req.params.id;
     try {
         const article = await newsModel.findById(id)
             .populate('category', 'name')
             .populate('author', 'fullname');
         if (!article) {
-            return res.status(404).send('Article not found');
+            return next(createError('Article not found', 404));
         }
 
         if (req.role == 'author') {
             if (req.id != article.author._id) {
-                return res.status(401).send('Unauthorized');
+                return next(createError('Unauthorized', 401));
             }
         }
 
         const categories = await categoryModel.find();
         res.render('admin/articles/update', { role: req.role, article, categories });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        // console.error(error);
+        // res.status(500).send('Server Error');
+        next(error)
     }
 }
 
-const updateArticle = async (req, res) => {
+const updateArticle = async (req, res, next) => {
     const id = req.params.id;
     try {
         const { title, content, category } = req.body;
         const article = await newsModel.findById(id);
         if (!article) {
-            return res.status(404).send('Article not found');
+            return next(createError('Article not found', 404));
         }
 
         if (req.role == 'author') {
             if (req.id != article.author._id) {
-                return res.status(401).send('Unauthorized');
+                return next(createError('Unauthorized', 401));
             }
         }
 
@@ -98,22 +100,20 @@ const updateArticle = async (req, res) => {
         await article.save();
         res.redirect('/admin/article');
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        next(error)
     }
 }
-
-const deleteArticle = async (req, res) => {
+const deleteArticle = async (req, res, next) => {
     const id = req.params.id;
     try {
         const article = await newsModel.findById(id);
         if (!article) {
-            return res.status(404).send('Article not found');
+            return next(createError('Article not found', 404));
         }
 
         if (req.role == 'author') {
             if (req.id != article.author._id) {
-                return res.status(401).send('Unauthorized');
+                return next(createError('Unauthorized', 401));
             }
         }
 
@@ -127,8 +127,7 @@ const deleteArticle = async (req, res) => {
         await article.deleteOne()
         res.json({ success: true });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        next(error)
     }
 }
 
