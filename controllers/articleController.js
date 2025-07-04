@@ -4,8 +4,9 @@ const userModel = require('../models/User');
 const fs = require('fs')
 const path = require('path')
 const createError = require('../utils/error-message');
+const { validationResult } = require('express-validator')
 
-const allArticle = async (req, res) => {
+const allArticle = async (req, res, next) => {
     try {
         let articles;
         if (req.role === 'admin') {
@@ -19,17 +20,28 @@ const allArticle = async (req, res) => {
         }
         res.render('admin/articles', { role: req.role, articles });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
+        // console.error(error);
+        // res.status(500).send('Server Error');
+        next(error)
     }
 }
 
 const addArticlePage = async (req, res) => {
     const categories = await categoryModel.find();
-    res.render('admin/articles/create', { role: req.role, categories });
+    res.render('admin/articles/create', { role: req.role, categories, errors: 0 });
 }
 
-const addArticle = async (req, res) => {
+const addArticle = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const categories = await categoryModel.find();
+        return res.render('admin/articles/create', {
+            role: req.role,
+            errors: errors.array(),
+            categories
+        })
+    }
+
     try {
         const { title, content, category } = req.body;
         const article = new newsModel({
@@ -42,13 +54,15 @@ const addArticle = async (req, res) => {
         await article.save();
         res.redirect('/admin/article');
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Article not saved');
+        // console.log(error);
+        // res.status(500).send('Article not saved');
+        next(error)
     }
 }
 
 const updateArticlePage = async (req, res, next) => {
     const id = req.params.id;
+
     try {
         const article = await newsModel.findById(id)
             .populate('category', 'name')
@@ -64,7 +78,7 @@ const updateArticlePage = async (req, res, next) => {
         }
 
         const categories = await categoryModel.find();
-        res.render('admin/articles/update', { role: req.role, article, categories });
+        res.render('admin/articles/update', { role: req.role, article, categories, errors: 0 });
     } catch (error) {
         // console.error(error);
         // res.status(500).send('Server Error');
@@ -74,6 +88,18 @@ const updateArticlePage = async (req, res, next) => {
 
 const updateArticle = async (req, res, next) => {
     const id = req.params.id;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const categories = await categoryModel.find();
+        return res.render('admin/articles/update', {
+            article: req.body,
+            role: req.role,
+            errors: errors.array(),
+            categories
+        })
+    }
+
     try {
         const { title, content, category } = req.body;
         const article = await newsModel.findById(id);
@@ -103,6 +129,7 @@ const updateArticle = async (req, res, next) => {
         next(error)
     }
 }
+
 const deleteArticle = async (req, res, next) => {
     const id = req.params.id;
     try {

@@ -6,6 +6,7 @@ const isLoggedIn = async (req, res, next) => {
         if (!token) return res.redirect('/admin/');
 
         const tokenData = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log(tokenData)
         req.id = tokenData.id;
         req.role = tokenData.role;
         req.fullname = tokenData.fullname;
